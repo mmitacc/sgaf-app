@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet, Link, useLocation } from "react-router";
+import { Outlet, Link, useLocation, useNavigate } from "react-router";
 import {
   BookOpen,
   LayoutDashboard,
@@ -9,9 +9,14 @@ import {
   X,
   LogOut,
   User,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import Footer from "@/components/Footer";
+import { Footer, Button } from "@/components";
+import { useTheme } from "@/context/ThemeContext";
+import { useAuthStore } from "@/features/auth/stores/useAuthStore";
+import { toast } from "sonner";
 
 interface NavigationItem {
   name: string;
@@ -29,6 +34,18 @@ const navigation: NavigationItem[] = [
 export function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+
+  // Extraemos usuario y logout del store
+  const usuario = useAuthStore((s) => s.usuario);
+  const logout = useAuthStore((s) => s.logout);
+
+  const handleLogout = () => {
+    logout();
+    toast.info("Sesión cerrada correctamente");
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="min-h-screen bg-bg-base text-text-base transition-colors duration-200">
@@ -38,12 +55,14 @@ export function DashboardLayout() {
           <div className="relative flex w-full max-w-xs flex-1 flex-col bg-bg-surface p-6 shadow-xl border-r border-text-muted/10 animate-fade-in-right">
             <div className="flex items-center justify-between">
               <Logo className="h-8" />
-              <button
-                onClick={() => setSidebarOpen(false)}
-                className="rounded-md p-1.5 text-text-muted hover:bg-text-muted/10 cursor-pointer"
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setSidebarOpen(true)}
+                className="md:hidden"
               >
                 <X className="h-6 w-6" />
-              </button>
+              </Button>
             </div>
             <nav className="mt-8 flex flex-col gap-1.5">
               {navigation.map((item) => {
@@ -96,10 +115,14 @@ export function DashboardLayout() {
           </nav>
 
           {/* Botón Cerrar Sesión inferior */}
-          <button className="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-rose-500 hover:bg-rose-500/10 transition-all cursor-pointer">
-            <LogOut className="h-5 w-5" />
+          <Button
+            variant="danger"
+            icon={LogOut}
+            onClick={handleLogout}
+            className="w-full justify-start"
+          >
             Cerrar Sesión
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -107,29 +130,60 @@ export function DashboardLayout() {
       <div className="md:pl-64 flex flex-col min-h-screen">
         {/* BARRA SUPERIOR (NAVBAR) */}
         <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-text-muted/10 bg-bg-surface/80 backdrop-blur px-4 sm:px-6">
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setSidebarOpen(true)}
-            className="rounded-md p-1.5 text-text-muted hover:bg-text-muted/10 md:hidden cursor-pointer"
+            className="md:hidden"
           >
             <Menu className="h-6 w-6" />
-          </button>
+          </Button>
 
           {/* Espaciador o Barra de búsqueda si se requiere */}
           <div className="flex-1 md:flex-none"></div>
 
           {/* Menú de Perfil de Usuario */}
           <div className="flex items-center gap-4">
-            <button className="flex items-center gap-2 rounded-full bg-text-muted/5 p-1.5 pr-3 text-sm font-medium text-text-base hover:bg-text-muted/10 transition-all cursor-pointer">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-secondary text-white font-bold text-xs shadow-sm shadow-brand-secondary/30">
-                <User className="h-4 w-4" />
-              </div>
-              <span className="hidden sm:inline">Mi Perfil</span>
-            </button>
+            {/* Botón interruptor de temas claro/oscuro */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              aria-label="Cambiar tema"
+            >
+              {theme === "light" ? (
+                <Moon className="h-5 w-5" />
+              ) : (
+                <Sun className="h-5 w-5 text-brand-primary" />
+              )}
+            </Button>
+
+            {/* Menú de Perfil de Usuario */}
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/perfil")}
+              className="rounded-full bg-text-muted/5 p-1.5 pr-3 font-medium"
+            >
+              {usuario?.foto_url ? (
+                <img
+                  src={usuario.foto_url}
+                  alt={usuario.nombres}
+                  className="h-8 w-8 rounded-full object-cover shadow-sm"
+                />
+              ) : (
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-secondary text-xs font-bold text-white shadow-sm shadow-brand-secondary/30">
+                  <User className="h-4 w-4" />
+                </div>
+              )}
+              <span className="hidden sm:inline">
+                {usuario?.nombres || "Mi Perfil"}
+              </span>
+            </Button>
           </div>
         </header>
 
         {/* ÁREA DE CONTENIDO INYECTADO */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main className="flex flex-col flex-1 p-4 sm:p-6 lg:p-8">
           <div className="mx-auto max-w-7xl">
             <Outlet />{" "}
             {/* Aquí React Router inyectará las páginas automáticamente */}

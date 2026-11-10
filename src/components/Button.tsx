@@ -3,8 +3,8 @@ import { Loader2 } from "lucide-react";
 
 // Extendemos las propiedades nativas del botón de HTML para no perder nada (type, onClick, etc.)
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost";
-  size?: "sm" | "md" | "lg";
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
+  size?: "sm" | "md" | "lg" | "icon";
   isLoading?: boolean;
   icon?: React.ComponentType<{ className?: string }>;
 }
@@ -32,12 +32,14 @@ export const Button: React.FC<ButtonProps> = ({
     outline:
       "border-2 border-brand-primary text-brand-primary hover:bg-brand-primary/5",
     ghost: "text-text-base hover:bg-text-muted/10",
+    danger: "text-rose-500 hover:bg-rose-500/10", // Ideal para "Cerrar Sesión"
   };
 
   const sizes = {
     sm: "px-3 py-1.5 text-xs gap-1.5",
     md: "px-4 py-2.5 text-sm gap-2",
     lg: "px-6 py-3 text-base gap-2.5",
+    icon: "p-2", // Ideal para botones cuadrados de solo icono (Tema, Menú, Cerrar)
   };
 
   return (

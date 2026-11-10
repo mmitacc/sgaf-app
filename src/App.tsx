@@ -1,16 +1,15 @@
-import { RouterProvider } from "react-router";
-import { router } from "@/routes/router";
+import { BrowserRouter } from "react-router";
 import { Toaster } from "sonner";
-// Nota: Aquí envolverás la app con <ThemeProvider> o <AuthProvider> más adelante
+import { ThemeProvider } from "@/context/ThemeContext";
+import { AppRouter } from "@/routes/router";
 
 export default function App() {
   return (
-    <>
-      {/* Sistema global de notificaciones toast */}
+    <ThemeProvider>
       <Toaster position="top-right" richColors closeButton />
-
-      {/* Proveedor central de rutas */}
-      <RouterProvider router={router} />
-    </>
+      <BrowserRouter>
+        <AppRouter />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
