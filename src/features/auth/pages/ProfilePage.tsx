@@ -13,6 +13,7 @@ import { Button, Input, PageHeader } from "@/components";
 import { useAuthStore } from "../stores/useAuthStore";
 import { perfilService } from "../services/perfil";
 import { extraerMensajeError } from "@/services/errorHandle";
+import { CambiarPasswordCard } from "../components/CambiarPasswordCard";
 
 export default function ProfilePage() {
   const usuario = useAuthStore((s) => s.usuario);
@@ -165,6 +166,8 @@ export default function ProfilePage() {
           </div>
         </form>
       </div>
+      {/* Nueva tarjeta de Cambio de Contraseña */}
+      <CambiarPasswordCard />
     </div>
   );
 }

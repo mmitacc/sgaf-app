@@ -1,5 +1,5 @@
 import api from "@/services/axios";
-import type { Rol } from "@/features/usuario/schemas/usuarioSchema";
+import type { Rol } from "@/features/usuario/types/usuarioType";
 
 export interface PerfilFormData {
   nombres: string;
@@ -34,4 +34,12 @@ export const perfilService = {
 
     return api.put<UserProfile>("/auth/perfil", formData).then((r) => r.data);
   },
+};
+
+export const cambiarPasswordService = async (data: {
+  passwordActual: string;
+  passwordNueva: string;
+}) => {
+  const response = await api.patch("/auth/cambiar-password", data);
+  return response.data;
 };

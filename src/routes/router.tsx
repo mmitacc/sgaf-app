@@ -4,13 +4,16 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { NotFound, Unauthorized } from "@/components";
 import LoginPage from "@/features/auth/pages/LoginPage";
 import ProfilePage from "@/features/auth/pages/ProfilePage";
+import { RegistroPage } from "@/features/auth/pages/RegistroPage";
+import { RegistroUsuarioPage } from "@/features/usuario/pages/RegistroUsuarioPage";
+import { UsuariosPage } from "@/features/usuario/pages/UsuariosPage";
 
 export function AppRouter() {
   return (
     <Routes>
       {/* --- RUTAS PÚBLICAS (Sin Layout de Dashboard) --- */}
       <Route path="/login" element={<LoginPage />} />
-
+      <Route path="/registro" element={<RegistroPage />} />
       {/* --- RUTAS PRIVADAS (Requieren sesión activa) --- */}
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<DashboardLayout />}>
@@ -48,11 +51,15 @@ export function AppRouter() {
           {/* Ruta de acceso denegado dentro del Dashboard */}
           <Route path="unauthorized" element={<Unauthorized />} />
 
-          {/* Ejemplo listo para cuando crees módulos restringidos por rol:
-          <Route element={<ProtectedRoute allowedRoles={["ADMINISTRADOR", "RECEPCIONISTA"]} />}>
-            <Route path="usuarios" element={<UsuariosPage />} />
-          </Route> 
-          */}
+          {/* Rutas restringidos por rol */}
+          <Route element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]} />}>
+            <Route path="/usuario" element={<UsuariosPage />} />
+            <Route path="/usuario/nuevo" element={<RegistroUsuarioPage />} />
+            <Route
+              path="/usuario/editar/:id"
+              element={<RegistroUsuarioPage />}
+            />
+          </Route>
         </Route>
       </Route>
 

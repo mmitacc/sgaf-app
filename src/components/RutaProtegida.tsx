@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
-import type { Rol } from "@/features/usuario/schemas/usuarioSchema";
+import type { Rol } from "@/features/usuario/types/usuarioType";
 import { Navigate, Outlet } from "react-router";
 
 interface Props {

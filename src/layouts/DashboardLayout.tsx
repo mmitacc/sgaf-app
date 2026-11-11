@@ -11,6 +11,7 @@ import {
   User,
   Sun,
   Moon,
+  Users,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { Footer, Button } from "@/components";
@@ -28,6 +29,7 @@ const navigation: NavigationItem[] = [
   { name: "Panel Principal", href: "/dashboard", icon: LayoutDashboard },
   { name: "Mis Cursos", href: "/courses", icon: BookOpen },
   { name: "Certificaciones", href: "/certificates", icon: GraduationCap },
+  { name: "Usuarios", href: "/usuario", icon: Users },
   { name: "Configuración", href: "/settings", icon: Settings },
 ];
 

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { perfilService } from "../services/perfil";
-import type { Rol } from "@/features/usuario/schemas/usuarioSchema";
+import type { Rol } from "@/features/usuario/types/usuarioType";
 import { toast } from "sonner";
 import { extraerMensajeError } from "@/services/errorHandle";
 

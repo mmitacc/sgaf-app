@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router";
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
-import type { Rol } from "@/features/usuario/schemas/usuarioSchema";
+import type { Rol } from "@/features/usuario/types/usuarioType";
 
 interface ProtectedRouteProps {
   allowedRoles?: Rol[];
