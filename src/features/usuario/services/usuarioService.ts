@@ -43,15 +43,15 @@ export const registrarEstudiante = async (
   data: RegistroEstudiante,
   fotoFile?: File | null,
 ): Promise<UsuarioGenerico> => {
-  console.log('Data Usuarionuevo: ',data);
-  
+  console.log("Data Usuarionuevo: ", data);
+
   const payload = prepararCuerpoPeticion(data, fotoFile);
   const response = await api.post<UsuarioGenerico>("/auth/register", payload);
   return response.data;
 };
 
 // ============================================================================
-// 2. CREAR USUARIO (Privado - Solo Administrador / Cualquier Rol)
+// 2. CREAR USUARIO (Cualquier Rol)
 // ============================================================================
 export const crearUsuario = async (
   data: RegistroUsuario,
@@ -134,4 +134,17 @@ export const actualizarUsuario = async (
 // ============================================================================
 export const eliminarUsuario = async (id: number): Promise<void> => {
   await api.delete(`/usuario/${id}`);
+};
+
+// ============================================================================
+// 7. RESETEAR CONTRASEÑA USUARIO POR ID
+// ============================================================================
+export const resetearPasswordUsuario = async (
+  id: number,
+): Promise<{ message: string; passwordTemporal: string }> => {
+  const response = await api.patch<{
+    message: string;
+    passwordTemporal: string;
+  }>(`/usuario/reset-password/${id}`);
+  return response.data;
 };

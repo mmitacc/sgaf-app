@@ -138,7 +138,7 @@ export function RegistroUsuarioPage() {
       <div className="max-w-2xl mx-auto mb-4 flex justify-between items-center">
         <Button
           type="button"
-          variant="ghost"
+          variant="outline" // ← Cambiado de "ghost" a "outline" para darle borde y mayor visibilidad
           size="sm"
           icon={ArrowLeft}
           onClick={() => navigate("/usuario")}

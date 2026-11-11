@@ -5,6 +5,7 @@ import type { UsuarioGenerico, Rol, EstadoUsuario } from "../types/usuarioType";
 import { Button } from "@/components";
 import { UserPlus } from "lucide-react";
 import { CardUsuario } from "../components/CardUsuario";
+import { toast } from "sonner";
 
 export function UsuariosPage() {
   const navigate = useNavigate();
@@ -56,19 +57,39 @@ export function UsuariosPage() {
     });
   }, [usuarios, busqueda, filtroRol, filtroEstado]);
 
-  const handleEliminar = async (usuario: UsuarioGenerico) => {
-    const confirmado = window.confirm(
-      `¿Estás seguro de eliminar a ${usuario.nombres} ${usuario.apellidos} (${usuario.rol})? Esta acción no se puede deshacer.`,
-    );
+  const handleEliminar = (usuario: UsuarioGenerico) => {
+    // 1. Toast de confirmación con Sonner
+    toast.warning(`¿Eliminar a ${usuario.nombres} ${usuario.apellidos}?`, {
+      description: `Esta acción eliminará al ${usuario.rol.toLowerCase()} permanentemente.`,
+      duration: Infinity, // No se cierra solo para forzar la confirmación
+      action: {
+        label: "Eliminar",
+        onClick: async () => {
+          try {
+            await eliminarUsuario(usuario.id);
 
-    if (!confirmado) return;
+            // Actualizamos el estado en memoria para removerlo de las Cards al instante
+            setUsuarios((prev) =>
+              prev.filter((item) => item.id !== usuario.id),
+            );
 
-    try {
-      await eliminarUsuario(usuario.id);
-      setUsuarios((prev) => prev.filter((item) => item.id !== usuario.id));
-    } catch (err: any) {
-      alert(err.response?.data?.message || "No se pudo eliminar el usuario.");
-    }
+            // 2. Toast de éxito
+            toast.success(
+              `Usuario ${usuario.nombres} eliminado correctamente.`,
+            );
+          } catch (err: any) {
+            // 3. Toast de error
+            toast.error(
+              err.response?.data?.message || "No se pudo eliminar el usuario.",
+            );
+          }
+        },
+      },
+      cancel: {
+        label: "Cancelar",
+        onClick: () => toast.dismiss(),
+      },
+    });
   };
 
   return (
@@ -95,9 +116,9 @@ export function UsuariosPage() {
       </div>
 
       {/* Barra de Búsqueda y Filtros */}
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="bg-bg-surface p-4 rounded-xl shadow-sm border border-slate-200/60 dark:border-slate-800 mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="md:col-span-2">
-          <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
+          <label className="block text-xs font-semibold text-text-muted uppercase mb-1">
             Buscar
           </label>
           <input
@@ -105,18 +126,18 @@ export function UsuariosPage() {
             placeholder="Nombre, apellido, correo o teléfono..."
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
+          <label className="block text-xs font-semibold text-text-muted uppercase mb-1">
             Rol
           </label>
           <select
             value={filtroRol}
             onChange={(e) => setFiltroRol(e.target.value as Rol | "TODOS")}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white"
+            className="w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
           >
             <option value="TODOS">Todos los roles</option>
             <option value="ESTUDIANTE">Estudiante</option>
@@ -127,7 +148,7 @@ export function UsuariosPage() {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
+          <label className="block text-xs font-semibold text-text-muted uppercase mb-1">
             Estado
           </label>
           <select
@@ -135,7 +156,7 @@ export function UsuariosPage() {
             onChange={(e) =>
               setFiltroEstado(e.target.value as EstadoUsuario | "TODOS")
             }
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white"
+            className="w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
           >
             <option value="TODOS">Todos los estados</option>
             <option value="ACTIVO">Activo</option>
@@ -155,11 +176,11 @@ export function UsuariosPage() {
 
       {/* Grid de Cards */}
       {loading ? (
-        <div className="p-12 text-center text-gray-500 bg-white rounded-xl shadow-sm">
+        <div className="p-12 text-center text-text-muted bg-bg-surface rounded-xl shadow-sm border border-slate-200/60 dark:border-slate-800">
           Cargando usuarios...
         </div>
       ) : usuariosFiltrados.length === 0 ? (
-        <div className="p-12 text-center text-gray-500 bg-white rounded-xl shadow-sm">
+        <div className="p-12 text-center text-text-muted bg-bg-surface rounded-xl shadow-sm border border-slate-200/60 dark:border-slate-800">
           No se encontraron usuarios con los filtros aplicados.
         </div>
       ) : (

@@ -105,14 +105,16 @@ export const FormularioUsuario = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 max-w-2xl mx-auto p-6 bg-white rounded-lg shadow"
+      className="space-y-4 max-w-2xl mx-auto p-6 bg-bg-surface text-text-base rounded-xl shadow-sm border border-slate-200/60 dark:border-slate-800"
     >
-      {titulo && <h2 className="text-2xl font-bold text-gray-800">{titulo}</h2>}
+      {titulo && (
+        <h2 className="text-2xl font-bold text-text-base mb-4">{titulo}</h2>
+      )}
 
       {/* Datos Personales */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-semibold text-text-muted mb-1">
             Nombres
           </label>
           <input
@@ -121,12 +123,12 @@ export const FormularioUsuario = ({
             required
             value={form.nombres}
             onChange={handleChange}
-            className="mt-1 w-full border rounded-md p-2"
+            className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-semibold text-text-muted mb-1">
             Apellidos
           </label>
           <input
@@ -135,12 +137,12 @@ export const FormularioUsuario = ({
             required
             value={form.apellidos}
             onChange={handleChange}
-            className="mt-1 w-full border rounded-md p-2"
+            className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-semibold text-text-muted mb-1">
             Teléfono
           </label>
           <input
@@ -148,19 +150,19 @@ export const FormularioUsuario = ({
             name="telefono"
             value={form.telefono}
             onChange={handleChange}
-            className="mt-1 w-full border rounded-md p-2"
+            className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-semibold text-text-muted mb-1">
             Género
           </label>
           <select
             name="masculino"
             value={String(form.masculino)}
             onChange={handleChange}
-            className="mt-1 w-full border rounded-md p-2"
+            className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
           >
             <option value="true">Masculino</option>
             <option value="false">Femenino</option>
@@ -170,8 +172,8 @@ export const FormularioUsuario = ({
 
       {/* Credenciales */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
+        <div className={esEdicion ? "md:col-span-2" : ""}>
+          <label className="block text-sm font-semibold text-text-muted mb-1">
             Correo Electrónico
           </label>
           <input
@@ -180,34 +182,35 @@ export const FormularioUsuario = ({
             required
             value={form.email}
             onChange={handleChange}
-            className="mt-1 w-full border rounded-md p-2"
+            className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            {esEdicion ? "Nueva Contraseña (opcional)" : "Contraseña"}
-          </label>
-          <input
-            type="password"
-            name="password"
-            required={!esEdicion}
-            minLength={6}
-            placeholder={
-              esEdicion ? "Dejar vacío para mantener actual" : "******"
-            }
-            value={form.password}
-            onChange={handleChange}
-            className="mt-1 w-full border rounded-md p-2"
-          />
-        </div>
+        {/* El campo password SOLO aparece al crear un usuario nuevo */}
+        {!esEdicion && (
+          <div>
+            <label className="block text-sm font-semibold text-text-muted mb-1">
+              Contraseña Inicial
+            </label>
+            <input
+              type="password"
+              name="password"
+              required
+              minLength={6}
+              placeholder="******"
+              value={form.password}
+              onChange={handleChange}
+              className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
+            />
+          </div>
+        )}
       </div>
 
       {/* Rol y Estado (Solo Admin) */}
       {!esModoPublico && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-semibold text-text-muted mb-1">
               Rol
             </label>
             <select
@@ -215,7 +218,7 @@ export const FormularioUsuario = ({
               value={form.rol}
               onChange={handleChange}
               disabled={esEdicion && form.rol === "ESTUDIANTE"}
-              className="mt-1 w-full border rounded-md p-2"
+              className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
             >
               {esEdicion && form.rol === "ESTUDIANTE" && (
                 <option value="ESTUDIANTE">Estudiante</option>
@@ -227,14 +230,14 @@ export const FormularioUsuario = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-semibold text-text-muted mb-1">
               Estado
             </label>
             <select
               name="estado"
               value={form.estado}
               onChange={handleChange}
-              className="mt-1 w-full border rounded-md p-2"
+              className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
             >
               <option value="PENDIENTE">Pendiente</option>
               <option value="ACTIVO">Activo</option>
@@ -248,7 +251,7 @@ export const FormularioUsuario = ({
       {/* Apoderado (Si es registro público o si el Admin edita/crea un Estudiante) */}
       {mostrarApoderado && (
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-semibold text-text-muted mb-1">
             Nombre del Apoderado
           </label>
           <input
@@ -257,7 +260,7 @@ export const FormularioUsuario = ({
             required
             value={form.apoderado}
             onChange={handleChange}
-            className="mt-1 w-full border rounded-md p-2"
+            className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
           />
         </div>
       )}
@@ -266,7 +269,7 @@ export const FormularioUsuario = ({
       {mostrarProfesor && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-blue-50 p-4 rounded-md">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-semibold text-text-muted mb-1">
               Fecha de Contrato
             </label>
             <input
@@ -275,12 +278,12 @@ export const FormularioUsuario = ({
               required
               value={form.fecha_contrato}
               onChange={handleChange}
-              className="mt-1 w-full border rounded-md p-2"
+              className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-semibold text-text-muted mb-1">
               Especialidad
             </label>
             {especialidades.length > 0 ? (
@@ -289,9 +292,9 @@ export const FormularioUsuario = ({
                 required
                 value={form.id_especialidad ?? ""}
                 onChange={handleChange}
-                className="mt-1 w-full border rounded-md p-2"
+                className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
               >
-                <option value="">Seleccione especialidad...</option>
+                <option value="">Ninguna</option>
                 {especialidades.map((esp) => (
                   <option key={esp.id} value={esp.id}>
                     {esp.nombre}
@@ -307,7 +310,7 @@ export const FormularioUsuario = ({
                 placeholder="ID Especialidad"
                 value={form.id_especialidad ?? ""}
                 onChange={handleChange}
-                className="mt-1 w-full border rounded-md p-2"
+                className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
               />
             )}
           </div>
@@ -317,7 +320,7 @@ export const FormularioUsuario = ({
       {/* Foto de Perfil */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-semibold text-text-muted mb-1">
             Subir Foto (Opcional)
           </label>
           <input
@@ -329,7 +332,7 @@ export const FormularioUsuario = ({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-semibold text-text-muted mb-1">
             O URL de Foto
           </label>
           <input
@@ -338,7 +341,7 @@ export const FormularioUsuario = ({
             value={form.foto_url}
             onChange={handleChange}
             placeholder="https://cloudinary.com..."
-            className="mt-1 w-full border rounded-md p-2"
+            className="mt-1 w-full bg-bg-base border border-slate-200 dark:border-slate-700 text-text-base placeholder-text-muted/40 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
           />
         </div>
       </div>

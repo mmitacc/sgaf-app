@@ -14,6 +14,7 @@ export function AppRouter() {
       {/* --- RUTAS PÚBLICAS (Sin Layout de Dashboard) --- */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registro" element={<RegistroPage />} />
+
       {/* --- RUTAS PRIVADAS (Requieren sesión activa) --- */}
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<DashboardLayout />}>
@@ -51,7 +52,7 @@ export function AppRouter() {
           {/* Ruta de acceso denegado dentro del Dashboard */}
           <Route path="unauthorized" element={<Unauthorized />} />
 
-          {/* Rutas restringidos por rol */}
+          {/* Rutas restringidas por rol */}
           <Route element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]} />}>
             <Route path="/usuario" element={<UsuariosPage />} />
             <Route path="/usuario/nuevo" element={<RegistroUsuarioPage />} />
@@ -60,10 +61,15 @@ export function AppRouter() {
               element={<RegistroUsuarioPage />}
             />
           </Route>
+
+          {/* --- COMODÍN INTERNO 404 ---
+              Captura links inexistentes de usuarios logueados dentro de la app */}
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
 
-      {/* --- RUTA COMODÍN 404  --- */}
+      {/* --- COMODÍN EXTERNO 404 ---
+          Captura links inválidos antes de loguearse (ej. desde login o registro) */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

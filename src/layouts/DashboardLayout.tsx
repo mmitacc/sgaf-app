@@ -177,9 +177,20 @@ export function DashboardLayout() {
                   <User className="h-4 w-4" />
                 </div>
               )}
-              <span className="hidden sm:inline">
-                {usuario?.nombres || "Mi Perfil"}
-              </span>
+              <div className="hidden sm:flex flex-col justify-center text-center items-center h-full px-2">
+                {/* Nombre de usuario principal - Usa text-text-base para que cambie a Gray 100 automáticamente */}
+                <span className="text-sm font-bold text-text-base leading-none">
+                  {usuario?.nombres || "Mi Perfil"}
+                </span>
+
+                {/* Línea divisoria horizontal sutil y visible */}
+                <div className="w-16 border-t-2 border-slate-300 dark:border-slate-700 my-1 opacity-100" />
+
+                {/* Rol con el color exacto de 'University' (Cyan) y tamaño ultra pequeño */}
+                <span className="text-[10px] font-extrabold tracking-wider text-brand-primary uppercase leading-none">
+                  {usuario?.rol || "USUARIO"}
+                </span>
+              </div>
             </Button>
           </div>
         </header>
