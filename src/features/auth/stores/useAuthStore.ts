@@ -4,6 +4,7 @@ import { perfilService } from "../services/perfil";
 import type { Rol } from "@/features/usuario/types/usuarioType";
 import { toast } from "sonner";
 import { extraerMensajeError } from "@/services/errorHandle";
+import { RUTA_INICIAL_POR_ROL } from "@/config/roles.config";
 
 export interface UsuarioAutenticado {
   id: string | number;
@@ -19,11 +20,12 @@ interface AuthState {
   token: string | null;
   usuario: UsuarioAutenticado | null;
   isAuthenticated: boolean;
-  login: (token: string) => Promise<void>;
+  login: (token: string) => Promise<UsuarioAutenticado>;
   logout: () => void;
   actualizarPerfil: (
     datosActualizados?: Partial<UsuarioAutenticado>,
   ) => Promise<void>;
+  obtenerRutaInicial: () => string;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -35,9 +37,15 @@ export const useAuthStore = create<AuthState>()(
 
       login: async (token) => {
         try {
-          set({ token, isAuthenticated: true });
+          set({ token }); // Guardamos el token primero para que perfilService lo use en el header Authorization
           const datosCompletosUsuario = await perfilService.obtener();
-          set({ usuario: datosCompletosUsuario });
+
+          set({
+            usuario: datosCompletosUsuario,
+            isAuthenticated: true, // Confirmamos autenticación solo cuando ya tenemos el rol
+          });
+
+          return datosCompletosUsuario; // Devolvemos el usuario a LoginPage
         } catch (error) {
           get().logout();
           throw error;
@@ -67,6 +75,12 @@ export const useAuthStore = create<AuthState>()(
             ),
           );
         }
+      },
+
+      // Devuelve la ruta exacta del rol actual o /login si no hay sesión
+      obtenerRutaInicial: () => {
+        const rol = get().usuario?.rol;
+        return rol ? RUTA_INICIAL_POR_ROL[rol] : "/login";
       },
     }),
     { name: "auth-storage" },

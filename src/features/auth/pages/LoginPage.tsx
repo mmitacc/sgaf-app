@@ -7,6 +7,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useAuthStore } from "../stores/useAuthStore";
 import { loginAuthService } from "@/features/auth/services/auth";
 import { extraerMensajeError } from "@/services/errorHandle";
+import { RUTA_INICIAL_POR_ROL } from "@/config/roles.config";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export default function LoginPage() {
       toast.success(
         `¡Bienvenido de nuevo${usuarioActual ? `, ${usuarioActual.nombres}` : ""}!`,
       );
-      navigate("/dashboard", { replace: true });
+      navigate(RUTA_INICIAL_POR_ROL[usuarioActual!.rol], { replace: true });
     } catch (err) {
       const msg = extraerMensajeError(
         err,

@@ -18,20 +18,7 @@ import { Footer, Button } from "@/components";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 import { toast } from "sonner";
-
-interface NavigationItem {
-  name: string;
-  href: string;
-  icon: React.ComponentType<{ className?: string }>;
-}
-
-const navigation: NavigationItem[] = [
-  { name: "Panel Principal", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Mis Cursos", href: "/courses", icon: BookOpen },
-  { name: "Certificaciones", href: "/certificates", icon: GraduationCap },
-  { name: "Usuarios", href: "/usuario", icon: Users },
-  { name: "Configuración", href: "/settings", icon: Settings },
-];
+import { CONFIG_POR_ROL } from "@/config/roles.config";
 
 export function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -49,6 +36,9 @@ export function DashboardLayout() {
     navigate("/login", { replace: true });
   };
 
+  // Obtenemos la configuración exacta del rol actual
+  const navigation = usuario ? CONFIG_POR_ROL[usuario.rol].menu : [];
+
   return (
     <div className="min-h-screen bg-bg-base text-text-base transition-colors duration-200">
       {/* --- SIDEBAR PARA MÓVILES (OVERLAY) --- */}
@@ -60,7 +50,7 @@ export function DashboardLayout() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setSidebarOpen(true)}
+                onClick={() => setSidebarOpen(false)}
                 className="md:hidden"
               >
                 <X className="h-6 w-6" />
@@ -68,11 +58,15 @@ export function DashboardLayout() {
             </div>
             <nav className="mt-8 flex flex-col gap-1.5">
               {navigation.map((item) => {
-                const isActive = location.pathname === item.href;
+                const isActive =
+                  location.pathname === item.path ||
+                  (item.path !== "/" &&
+                    !item.path.endsWith("/dashboard") &&
+                    location.pathname.startsWith(item.path));
                 return (
                   <Link
-                    key={item.name}
-                    to={item.href}
+                    key={item.path}
+                    to={item.path}
                     onClick={() => setSidebarOpen(false)}
                     className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all ${
                       isActive
@@ -81,7 +75,7 @@ export function DashboardLayout() {
                     }`}
                   >
                     <item.icon className="h-5 w-5" />
-                    {item.name}
+                    {item.label}
                   </Link>
                 );
               })}
@@ -98,11 +92,15 @@ export function DashboardLayout() {
         <div className="flex flex-1 flex-col justify-between p-4">
           <nav className="flex flex-col gap-1.5">
             {navigation.map((item) => {
-              const isActive = location.pathname === item.href;
+              const isActive =
+                location.pathname === item.path ||
+                (item.path !== "/" &&
+                  !item.path.endsWith("/dashboard") &&
+                  location.pathname.startsWith(item.path));
               return (
                 <Link
-                  key={item.name}
-                  to={item.href}
+                  key={item.path}
+                  to={item.path}
                   className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
                     isActive
                       ? "bg-brand-primary text-white shadow-md shadow-brand-primary/20"
@@ -110,7 +108,7 @@ export function DashboardLayout() {
                   }`}
                 >
                   <item.icon className="h-5 w-5" />
-                  {item.name}
+                  {item.label}
                 </Link>
               );
             })}

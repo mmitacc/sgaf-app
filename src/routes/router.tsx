@@ -2,74 +2,131 @@ import { Routes, Route, Navigate } from "react-router";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { NotFound, Unauthorized } from "@/components";
+import { useAuthStore } from "@/features/auth/stores/useAuthStore";
+import { RUTA_INICIAL_POR_ROL } from "@/config/roles.config";
+
+// Páginas Públicas y Perfil
 import LoginPage from "@/features/auth/pages/LoginPage";
 import ProfilePage from "@/features/auth/pages/ProfilePage";
 import { RegistroPage } from "@/features/auth/pages/RegistroPage";
-import { RegistroUsuarioPage } from "@/features/usuario/pages/RegistroUsuarioPage";
+
+// Páginas Administrador
+import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
 import { UsuariosPage } from "@/features/usuario/pages/UsuariosPage";
+import { RegistroUsuarioPage } from "@/features/usuario/pages/RegistroUsuarioPage";
+
+// Páginas Recepcionista
+import { RecepcionDashboardPage } from "@/features/recepcion/pages/RecepcionDashboardPage";
+import { ActivacionMatriculaPage } from "@/features/recepcion/pages/ActivacionMatriculaPage";
+
+// Páginas Profesor
+import { ProfesorDashboardPage } from "@/features/profesor/pages/ProfesorDashboardPage";
+
+// Páginas Estudiante
+import { EstudianteDashboardPage } from "@/features/estudiante/pages/EstudianteDashboardPage";
+import { PagosPage } from "@/features/recepcion/pages/PagosPage";
+import { EstadoCuentaEstudiantePage } from "@/features/estudiante/pages/EstadoCuentaPage";
+import { MatriculaEstudiantePage } from "@/features/estudiante/pages/MatriculaEstudiantePage";
+
+function RoleRedirect() {
+  const usuario = useAuthStore((state) => state.usuario);
+  if (!usuario) return <Navigate to="/login" replace />;
+  return <Navigate to={RUTA_INICIAL_POR_ROL[usuario.rol]} replace />;
+}
 
 export function AppRouter() {
   return (
     <Routes>
-      {/* --- RUTAS PÚBLICAS (Sin Layout de Dashboard) --- */}
+      {/* --- RUTAS PÚBLICAS --- */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registro" element={<RegistroPage />} />
 
-      {/* --- RUTAS PRIVADAS (Requieren sesión activa) --- */}
+      {/* --- RUTAS PRIVADAS --- */}
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<DashboardLayout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
+          {/* Redirección automática al panel del rol */}
+          <Route index element={<RoleRedirect />} />
+
+          {/* Compartidas */}
           <Route path="perfil" element={<ProfilePage />} />
-
-          <Route
-            path="dashboard"
-            element={
-              <div className="space-y-4">
-                <h1 className="text-3xl font-extrabold tracking-tight text-text-base">
-                  Panel Principal
-                </h1>
-                <p className="text-text-muted">
-                  Bienvenido al sgaf-app de Tech University.
-                </p>
-              </div>
-            }
-          />
-
-          <Route
-            path="courses"
-            element={
-              <div className="space-y-4">
-                <h1 className="text-3xl font-extrabold tracking-tight text-text-base">
-                  Mis Cursos
-                </h1>
-                <p className="text-text-muted">
-                  Explora tus asignaturas activas y material de estudio.
-                </p>
-              </div>
-            }
-          />
-
-          {/* Ruta de acceso denegado dentro del Dashboard */}
           <Route path="unauthorized" element={<Unauthorized />} />
 
-          {/* Rutas restringidas por rol */}
+          {/* 1. MÓDULOS ADMINISTRADOR */}
           <Route element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]} />}>
-            <Route path="/usuario" element={<UsuariosPage />} />
-            <Route path="/usuario/nuevo" element={<RegistroUsuarioPage />} />
+            <Route path="admin/dashboard" element={<AdminDashboardPage />} />
+            <Route path="usuario" element={<UsuariosPage />} />
+            <Route path="usuario/nuevo" element={<RegistroUsuarioPage />} />
             <Route
-              path="/usuario/editar/:id"
+              path="usuario/editar/:id"
               element={<RegistroUsuarioPage />}
+            />
+            {/* Futuras rutas del menu: */}
+            <Route path="admin/finanzas" element={<div>Módulo Finanzas</div>} />
+          </Route>
+
+          {/* 2. MÓDULOS RECEPCIONISTA */}
+          <Route element={<ProtectedRoute allowedRoles={["RECEPCIONISTA"]} />}>
+            <Route
+              path="recepcion/dashboard"
+              element={<RecepcionDashboardPage />}
+            />
+            <Route
+              path="recepcion/matriculas"
+              element={<ActivacionMatriculaPage />}
+            />
+            <Route path="recepcion/pagos" element={<PagosPage />} />
+            <Route
+              path="recepcion/estudiantes"
+              element={<div>Directorio Estudiantes</div>}
             />
           </Route>
 
-          {/* --- COMODÍN INTERNO 404 ---
-              Captura links inexistentes de usuarios logueados dentro de la app */}
+          {/* 3. MÓDULOS PROFESOR */}
+          <Route element={<ProtectedRoute allowedRoles={["PROFESOR"]} />}>
+            <Route
+              path="profesor/dashboard"
+              element={<ProfesorDashboardPage />}
+            />
+            <Route
+              path="profesor/cursos"
+              element={<div>Mis Cursos Asignados</div>}
+            />
+            <Route
+              path="profesor/notas"
+              element={<div>Registro de Notas</div>}
+            />
+            <Route
+              path="profesor/asistencia"
+              element={<div>Control de Asistencia</div>}
+            />
+          </Route>
+
+          {/* 4. MÓDULOS ESTUDIANTE */}
+          <Route element={<ProtectedRoute allowedRoles={["ESTUDIANTE"]} />}>
+            <Route
+              path="estudiante/dashboard"
+              element={<EstudianteDashboardPage />}
+            />
+            <Route
+              path="estudiante/matricula"
+              element={<MatriculaEstudiantePage />}
+            />
+            <Route
+              path="estudiante/notas"
+              element={<div>Mis Calificaciones</div>}
+            />
+            <Route
+              path="estudiante/pagos"
+              element={<EstadoCuentaEstudiantePage />}
+            />
+          </Route>
+
+          {/* Comodín interno 404 */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
 
-      {/* --- COMODÍN EXTERNO 404 ---
-          Captura links inválidos antes de loguearse (ej. desde login o registro) */}
+      {/* Comodín externo 404 */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
