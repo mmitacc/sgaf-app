@@ -9,6 +9,7 @@ import {
   FileSpreadsheet,
   CalendarCheck,
   Receipt,
+  BookOpenCheck,
   type LucideIcon,
 } from "lucide-react";
 
@@ -16,13 +17,15 @@ export interface ItemMenu {
   label: string;
   path: string;
   icon: LucideIcon;
-  badge?: string; // Opcional: útil para mostrar contadores o etiquetas "Nuevo"
+  descripcion?: string;
+  badge?: string;
 }
 
 export interface ConfiguracionRol {
   rutaInicial: string;
   tituloPanel: string;
   subtituloPanel: string;
+  etiquetaRol: string;
   menu: ItemMenu[];
 }
 
@@ -32,6 +35,7 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
     tituloPanel: "Panel de Administración",
     subtituloPanel:
       "Control global académico, financiero y gestión de personal.",
+    etiquetaRol: "Administración Central",
     menu: [
       {
         label: "Panel General",
@@ -40,13 +44,17 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
       },
       {
         label: "Gestión de Usuarios",
-        path: "/usuario", // Alineado con tu ruta existente en AppRouter
+        path: "/usuario",
         icon: Users,
+        descripcion:
+          "Administra cuentas, roles y permisos de docentes, estudiantes y personal.",
       },
       {
         label: "Finanzas y Reportes",
         path: "/admin/finanzas",
         icon: Wallet,
+        descripcion:
+          "Supervisa recaudación global, historial de pagos y reportes financieros.",
       },
     ],
   },
@@ -55,6 +63,7 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
     rutaInicial: "/recepcion/dashboard",
     tituloPanel: "Panel de Recepción y Caja",
     subtituloPanel: "Gestión de matrículas, inscripciones y cobros.",
+    etiquetaRol: "Atención y Caja",
     menu: [
       {
         label: "Inicio Recepción",
@@ -65,16 +74,22 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
         label: "Matrículas e Inscripciones",
         path: "/recepcion/matriculas",
         icon: ClipboardCheck,
+        descripcion:
+          "Valida pagos de matrícula inicial y activa estudiantes pendientes.",
       },
       {
         label: "Caja y Pagos",
         path: "/recepcion/pagos",
         icon: Receipt,
+        descripcion:
+          "Registra cobros de mensualidades, matrículas y consulta estados de cuenta.",
       },
       {
         label: "Directorio Estudiantes",
         path: "/recepcion/estudiantes",
         icon: GraduationCap,
+        descripcion:
+          "Consulta datos de contacto, estado académico y situación financiera.",
       },
     ],
   },
@@ -84,6 +99,7 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
     tituloPanel: "Portal Docente",
     subtituloPanel:
       "Tus asignaturas asignadas, control de asistencia y calificaciones.",
+    etiquetaRol: "Plana Docente",
     menu: [
       {
         label: "Inicio Docente",
@@ -91,19 +107,25 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
         icon: LayoutDashboard,
       },
       {
-        label: "Mis Cursos Asignados",
-        path: "/profesor/cursos",
+        label: "Mis Grupos Asignados",
+        path: "/profesor/grupos",
         icon: BookOpen,
+        descripcion:
+          "Revisa tus secciones asignadas, métricas y nómina de estudiantes.",
       },
       {
-        label: "Registro de Notas",
-        path: "/profesor/notas",
+        label: "Tareas y Evaluaciones",
+        path: "/profesor/tareas-grupo",
         icon: FileSpreadsheet,
+        descripcion:
+          "Publica nuevas actividades, revisa archivos enviados y registra notas.",
       },
       {
         label: "Control de Asistencia",
         path: "/profesor/asistencia",
         icon: CalendarCheck,
+        descripcion:
+          "Marca la asistencia diaria de tus estudiantes por sesión de clase.",
       },
     ],
   },
@@ -113,6 +135,7 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
     tituloPanel: "Portal del Estudiante",
     subtituloPanel:
       "Consulta tus asignaturas, rendimiento académico y estado de cuenta.",
+    etiquetaRol: "Comunidad Estudiantil",
     menu: [
       {
         label: "Mi Resumen",
@@ -120,25 +143,37 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
         icon: LayoutDashboard,
       },
       {
+        label: "Aula Virtual",
+        path: "/estudiante/aula-virtual",
+        icon: BookOpenCheck,
+        descripcion:
+          "Accede a tus cursos inscritos, lee instrucciones y sube tus entregas.",
+      },
+      {
         label: "Mis Calificaciones",
         path: "/estudiante/notas",
         icon: FileSpreadsheet,
+        descripcion:
+          "Consulta tus notas por asignatura, evaluaciones y promedio ponderado.",
       },
       {
         label: "Estado de Cuenta",
         path: "/estudiante/pagos",
         icon: Wallet,
+        descripcion:
+          "Revisa tus cuotas pendientes, historial de pagos y paga en línea.",
       },
       {
         label: "Matrícula en Línea",
         path: "/estudiante/matricula",
         icon: BookOpen,
+        descripcion:
+          "Inscríbete en los grupos disponibles y arma tu carga académica del ciclo.",
       },
     ],
   },
 };
 
-// Helper rápido para mantener compatibilidad limpia en LoginPage y RoleRedirect
 export const RUTA_INICIAL_POR_ROL: Record<Rol, string> = {
   ADMINISTRADOR: CONFIG_POR_ROL.ADMINISTRADOR.rutaInicial,
   RECEPCIONISTA: CONFIG_POR_ROL.RECEPCIONISTA.rutaInicial,

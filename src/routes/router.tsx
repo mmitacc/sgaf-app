@@ -21,12 +21,16 @@ import { ActivacionMatriculaPage } from "@/features/recepcion/pages/ActivacionMa
 
 // Páginas Profesor
 import { ProfesorDashboardPage } from "@/features/profesor/pages/ProfesorDashboardPage";
+import { GruposProfesorPage } from "@/features/profesor/pages/GruposProfesorPage";
+import { TareasGrupoProfesorPage } from "@/features/profesor/pages/TareasGrupoProfesorPage";
 
 // Páginas Estudiante
 import { EstudianteDashboardPage } from "@/features/estudiante/pages/EstudianteDashboardPage";
 import { PagosPage } from "@/features/recepcion/pages/PagosPage";
 import { EstadoCuentaEstudiantePage } from "@/features/estudiante/pages/EstadoCuentaPage";
 import { MatriculaEstudiantePage } from "@/features/estudiante/pages/MatriculaEstudiantePage";
+import { NotasEstudiantePage } from "@/features/estudiante/pages/NotasEstudiantePage";
+import { AulaVirtualEstudiantePage } from "@/features/estudiante/pages/AulaVirtualEstudiantePage";
 
 function RoleRedirect() {
   const usuario = useAuthStore((state) => state.usuario);
@@ -87,13 +91,10 @@ export function AppRouter() {
               path="profesor/dashboard"
               element={<ProfesorDashboardPage />}
             />
+            <Route path="/profesor/grupos" element={<GruposProfesorPage />} />
             <Route
-              path="profesor/cursos"
-              element={<div>Mis Cursos Asignados</div>}
-            />
-            <Route
-              path="profesor/notas"
-              element={<div>Registro de Notas</div>}
+              path="profesor/tareas-grupo"
+              element={<TareasGrupoProfesorPage />}
             />
             <Route
               path="profesor/asistencia"
@@ -111,13 +112,14 @@ export function AppRouter() {
               path="estudiante/matricula"
               element={<MatriculaEstudiantePage />}
             />
-            <Route
-              path="estudiante/notas"
-              element={<div>Mis Calificaciones</div>}
-            />
+            <Route path="/estudiante/notas" element={<NotasEstudiantePage />} />
             <Route
               path="estudiante/pagos"
               element={<EstadoCuentaEstudiantePage />}
+            />
+            <Route
+              path="estudiante/aula-virtual"
+              element={<AulaVirtualEstudiantePage />}
             />
           </Route>
 

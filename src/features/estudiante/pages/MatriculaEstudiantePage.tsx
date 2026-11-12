@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import api from "@/services/axios";
 import {
   BookOpen,
   User,
@@ -13,7 +14,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { estudianteService } from "../services/estudianteService";
-import type { GrupoEnriquecido } from "../types/matriculaType";
+import type { GrupoEnriquecido, MatriculaActiva } from "../types/matriculaType";
 import { extraerMensajeError } from "@/services/errorHandle";
 
 export function MatriculaEstudiantePage() {
@@ -21,7 +22,7 @@ export function MatriculaEstudiantePage() {
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
 
-  // Controla qué grupo se está procesando y cuáles ya fueron matriculados en esta sesión
+  // Controla qué grupo se está procesando y cuáles ya están matriculados
   const [matriculandoId, setMatriculandoId] = useState<number | null>(null);
   const [gruposMatriculados, setGruposMatriculados] = useState<number[]>([]);
 
@@ -29,8 +30,16 @@ export function MatriculaEstudiantePage() {
     const cargarOfertaAcademica = async () => {
       setCargando(true);
       try {
-        const data = await estudianteService.obtenerGruposDisponibles();
-        setGrupos(data);
+        // 1. Cargamos oferta académica y matrículas previas del alumno en paralelo
+        const [dataGrupos, resMisMatriculas] = await Promise.all([
+          estudianteService.obtenerGruposDisponibles(),
+          estudianteService.obtenerMisMatriculas(),
+        ]);
+
+        setGrupos(dataGrupos);
+
+        // 2. Precargamos los IDs de los grupos donde el alumno ya está inscrito
+        setGruposMatriculados(resMisMatriculas.map((m) => m.id_grupo));
       } catch (error) {
         toast.error(
           extraerMensajeError(

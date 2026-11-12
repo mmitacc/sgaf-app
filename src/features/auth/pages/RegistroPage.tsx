@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router';
-import { FormularioUsuario } from '@/features/usuario/components/FormularioUsuario';
-import type { FormularioUsuarioValues } from '@/features/usuario/types/usuarioType';
-import { registrarEstudiante } from '@/features/usuario/services/usuarioService';
-import type { RegistroEstudiante } from '@/features/usuario/types/usuarioType';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router";
+import { FormularioUsuario } from "@/features/usuario/components/FormularioUsuario";
+import type { FormularioUsuarioValues } from "@/features/usuario/types/usuarioType";
+import { registrarEstudiante } from "@/features/usuario/services/usuarioService";
+import type { RegistroEstudiante } from "@/features/usuario/types/usuarioType";
+import { toast } from "sonner";
 
-export function RegistroPage ()  {
+export function RegistroPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,19 +24,22 @@ export function RegistroPage ()  {
         email: values.email.trim(),
         password: values.password,
         masculino: values.masculino,
-        estado: 'PENDIENTE',
+        estado: "PENDIENTE",
         foto_url: values.foto_url?.trim() || undefined,
         apoderado: values.apoderado.trim(),
       };
 
       await registrarEstudiante(payload, values.fotoFile);
 
-      alert('¡Registro exitoso! Ahora puedes iniciar sesión en TechUniversity.');
-      navigate('/login');
+      toast.success(
+        "¡Registro exitoso! Ahora puedes iniciar sesión en TechUniversity.",
+      );
+      navigate("/login");
     } catch (err: any) {
       const mensaje =
-        err.response?.data?.message || 'Ocurrió un error al registrar la cuenta.';
-      setError(Array.isArray(mensaje) ? mensaje.join(', ') : mensaje);
+        err.response?.data?.message ||
+        "Ocurrió un error al registrar la cuenta.";
+      setError(Array.isArray(mensaje) ? mensaje.join(", ") : mensaje);
     } finally {
       setLoading(false);
     }
@@ -58,11 +62,14 @@ export function RegistroPage ()  {
       />
 
       <p className="text-center mt-5 text-sm text-gray-600">
-        ¿Ya tienes una cuenta registrada?{' '}
-        <Link to="/login" className="text-blue-600 font-semibold hover:underline">
+        ¿Ya tienes una cuenta registrada?{" "}
+        <Link
+          to="/login"
+          className="text-blue-600 font-semibold hover:underline"
+        >
           Inicia sesión aquí
         </Link>
       </p>
     </div>
   );
-};
+}

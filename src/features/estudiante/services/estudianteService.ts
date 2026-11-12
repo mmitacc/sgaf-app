@@ -10,6 +10,8 @@ import type {
   Grupo,
   GrupoEnriquecido,
   Materia,
+  MatriculaConDetalle,
+  PayloadEntrega,
   PeriodoDetalle,
   ProfesorDetalle,
 } from "../types/matriculaType";
@@ -109,6 +111,36 @@ export const estudianteService = {
 
   matricularseEnGrupo: async (payload: CrearMatriculaPayload) => {
     const { data } = await api.post("/matricula", payload);
+    return data;
+  },
+
+  async obtenerMisMatriculas(): Promise<MatriculaConDetalle[]> {
+    const { data } = await api.get<MatriculaConDetalle[]>(
+      "/matricula/estudiante",
+    );
+    return data;
+  },
+
+  async subirArchivoTarea(
+    file: File,
+  ): Promise<{ url: string; nombre_original: string }> {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const { data } = await api.post<{ url: string; nombre_original: string }>(
+      "/entrega/upload",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    return data;
+  },
+
+  async registrarEntrega(payload: PayloadEntrega) {
+    const { data } = await api.post("/entrega", payload);
     return data;
   },
 };
