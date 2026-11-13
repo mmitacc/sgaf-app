@@ -31,6 +31,7 @@ import { EstadoCuentaEstudiantePage } from "@/features/estudiante/pages/EstadoCu
 import { MatriculaEstudiantePage } from "@/features/estudiante/pages/MatriculaEstudiantePage";
 import { NotasEstudiantePage } from "@/features/estudiante/pages/NotasEstudiantePage";
 import { AulaVirtualEstudiantePage } from "@/features/estudiante/pages/AulaVirtualEstudiantePage";
+import { MaterialesProfesorPage } from "@/features/profesor/pages/MaterialesProfesorPage";
 
 function RoleRedirect() {
   const usuario = useAuthStore((state) => state.usuario);
@@ -97,8 +98,8 @@ export function AppRouter() {
               element={<TareasGrupoProfesorPage />}
             />
             <Route
-              path="profesor/asistencia"
-              element={<div>Control de Asistencia</div>}
+              path="profesor/materiales"
+              element={<MaterialesProfesorPage />}
             />
           </Route>
 

@@ -11,6 +11,7 @@ import {
   Receipt,
   BookOpenCheck,
   type LucideIcon,
+  FolderKanban,
 } from "lucide-react";
 
 export interface ItemMenu {
@@ -114,18 +115,18 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
           "Revisa tus secciones asignadas, métricas y nómina de estudiantes.",
       },
       {
+        label: "Materiales de Clase",
+        path: "/profesor/materiales",
+        icon: FolderKanban,
+        descripcion:
+          "Publica enlaces de videos, diapositivas y recursos de cada sesión.",
+      },
+      {
         label: "Tareas y Evaluaciones",
         path: "/profesor/tareas-grupo",
         icon: FileSpreadsheet,
         descripcion:
           "Publica nuevas actividades, revisa archivos enviados y registra notas.",
-      },
-      {
-        label: "Control de Asistencia",
-        path: "/profesor/asistencia",
-        icon: CalendarCheck,
-        descripcion:
-          "Marca la asistencia diaria de tus estudiantes por sesión de clase.",
       },
     ],
   },
