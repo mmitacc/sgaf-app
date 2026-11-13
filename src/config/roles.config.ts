@@ -7,11 +7,11 @@ import {
   GraduationCap,
   BookOpen,
   FileSpreadsheet,
-  CalendarCheck,
   Receipt,
   BookOpenCheck,
   type LucideIcon,
   FolderKanban,
+  BarChart3,
 } from "lucide-react";
 
 export interface ItemMenu {
@@ -49,6 +49,13 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
         icon: Users,
         descripcion:
           "Administra cuentas, roles y permisos de docentes, estudiantes y personal.",
+      },
+      {
+        label: "Estadísticas Globales",
+        path: "/admin/estadisticas",
+        icon: BarChart3,
+        descripcion:
+          "Visualiza métricas de comunidad estudiantil, plana docente y ocupación de grupos.",
       },
       {
         label: "Finanzas y Reportes",

@@ -14,24 +14,26 @@ import { RegistroPage } from "@/features/auth/pages/RegistroPage";
 import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
 import { UsuariosPage } from "@/features/usuario/pages/UsuariosPage";
 import { RegistroUsuarioPage } from "@/features/usuario/pages/RegistroUsuarioPage";
+import { AdminFinanzasPage } from "@/features/admin/pages/AdminFinanzasPage";
+import { AdminEstadisticasPage } from "@/features/admin/pages/AdminEstadisticasPage";
 
 // Páginas Recepcionista
 import { RecepcionDashboardPage } from "@/features/recepcion/pages/RecepcionDashboardPage";
 import { ActivacionMatriculaPage } from "@/features/recepcion/pages/ActivacionMatriculaPage";
+import { PagosPage } from "@/features/recepcion/pages/PagosPage";
 
 // Páginas Profesor
 import { ProfesorDashboardPage } from "@/features/profesor/pages/ProfesorDashboardPage";
 import { GruposProfesorPage } from "@/features/profesor/pages/GruposProfesorPage";
 import { TareasGrupoProfesorPage } from "@/features/profesor/pages/TareasGrupoProfesorPage";
+import { MaterialesProfesorPage } from "@/features/profesor/pages/MaterialesProfesorPage";
 
 // Páginas Estudiante
 import { EstudianteDashboardPage } from "@/features/estudiante/pages/EstudianteDashboardPage";
-import { PagosPage } from "@/features/recepcion/pages/PagosPage";
 import { EstadoCuentaEstudiantePage } from "@/features/estudiante/pages/EstadoCuentaPage";
 import { MatriculaEstudiantePage } from "@/features/estudiante/pages/MatriculaEstudiantePage";
 import { NotasEstudiantePage } from "@/features/estudiante/pages/NotasEstudiantePage";
 import { AulaVirtualEstudiantePage } from "@/features/estudiante/pages/AulaVirtualEstudiantePage";
-import { MaterialesProfesorPage } from "@/features/profesor/pages/MaterialesProfesorPage";
 
 function RoleRedirect() {
   const usuario = useAuthStore((state) => state.usuario);
@@ -59,14 +61,17 @@ export function AppRouter() {
           {/* 1. MÓDULOS ADMINISTRADOR */}
           <Route element={<ProtectedRoute allowedRoles={["ADMINISTRADOR"]} />}>
             <Route path="admin/dashboard" element={<AdminDashboardPage />} />
+            <Route
+              path="admin/estadisticas"
+              element={<AdminEstadisticasPage />}
+            />
+            <Route path="admin/finanzas" element={<AdminFinanzasPage />} />
             <Route path="usuario" element={<UsuariosPage />} />
             <Route path="usuario/nuevo" element={<RegistroUsuarioPage />} />
             <Route
               path="usuario/editar/:id"
               element={<RegistroUsuarioPage />}
             />
-            {/* Futuras rutas del menu: */}
-            <Route path="admin/finanzas" element={<div>Módulo Finanzas</div>} />
           </Route>
 
           {/* 2. MÓDULOS RECEPCIONISTA */}
