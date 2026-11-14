@@ -49,4 +49,23 @@ export const recepcionService = {
     );
     return data;
   },
+
+  async verificarMatriculaPeriodo(
+    idPeriodo: number,
+    idEstudiante: number,
+  ): Promise<boolean> {
+    try {
+      await api.post("/pago/matricula", {
+        id_periodo: idPeriodo,
+        id_estudiante: idEstudiante,
+      });
+      return true; // Tiene matrícula aprobada en este periodo
+    } catch (error: unknown) {
+      const err = error as { response?: { status?: number }; status?: number };
+      if (err?.response?.status === 404 || err?.status === 404) {
+        return false; // Aún no ha pagado su matrícula en este periodo
+      }
+      throw error;
+    }
+  },
 };

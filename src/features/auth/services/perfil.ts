@@ -1,5 +1,5 @@
 import api from "@/services/axios";
-import type { Rol } from "@/features/usuario/types/usuarioType";
+import type { Rol, EstadoUsuario } from "@/features/usuario/types/usuarioType";
 
 export interface PerfilFormData {
   nombres: string;
@@ -12,6 +12,7 @@ export interface UserProfile {
   nombres: string;
   apellidos: string;
   email: string;
+  estado: EstadoUsuario;
   rol: Rol;
   foto_url?: string | null;
   telefono?: string | null;

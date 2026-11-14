@@ -3,6 +3,7 @@ import type { UsuarioGenerico, Rol, EstadoUsuario } from "../types/usuarioType";
 import { Button } from "@/components";
 import { Pencil, Trash2, KeyRound } from "lucide-react";
 import { resetearPasswordUsuario } from "../services/usuarioService";
+import { extraerMensajeError } from "@/services/errorHandle";
 import { toast } from "sonner";
 
 interface CardUsuarioProps {
@@ -13,22 +14,26 @@ interface CardUsuarioProps {
 
 const badgeRol = (rol: Rol) => {
   const estilos: Record<Rol, string> = {
-    ADMINISTRADOR: "bg-purple-100 text-purple-800 border-purple-200",
-    PROFESOR: "bg-blue-100 text-blue-800 border-blue-200",
-    RECEPCIONISTA: "bg-amber-100 text-amber-800 border-amber-200",
-    ESTUDIANTE: "bg-emerald-100 text-emerald-800 border-emerald-200",
+    ADMINISTRADOR:
+      "bg-purple-500/15 text-purple-700 border-purple-500/30 dark:text-purple-400",
+    PROFESOR:
+      "bg-sky-500/15 text-sky-700 border-sky-500/30 dark:text-sky-400",
+    RECEPCIONISTA:
+      "bg-amber-500/15 text-amber-700 border-amber-500/30 dark:text-amber-400",
+    ESTUDIANTE:
+      "bg-emerald-500/15 text-emerald-700 border-emerald-500/30 dark:text-emerald-400",
   };
-  return estilos[rol] || "bg-gray-100 text-gray-800";
+  return estilos[rol] || "bg-text-muted/15 text-text-muted border-text-muted/30";
 };
 
 const badgeEstado = (estado: EstadoUsuario) => {
   const estilos: Record<EstadoUsuario, string> = {
-    ACTIVO: "bg-green-100 text-green-800",
-    PENDIENTE: "bg-yellow-100 text-yellow-800",
-    SUSPENDIDO: "bg-orange-100 text-orange-800",
-    INACTIVO: "bg-red-100 text-red-800",
+    ACTIVO: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+    PENDIENTE: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+    SUSPENDIDO: "bg-orange-500/15 text-orange-700 dark:text-orange-400",
+    INACTIVO: "bg-red-500/15 text-red-700 dark:text-red-400",
   };
-  return estilos[estado] || "bg-gray-100 text-gray-800";
+  return estilos[estado] || "bg-text-muted/15 text-text-muted";
 };
 
 export function CardUsuario({
@@ -42,7 +47,6 @@ export function CardUsuario({
     ? usuario.fecha_contrato.slice(0, 10)
     : "Sin fecha";
 
-  // Función de reseteo de contraseña
   const handleResetPassword = () => {
     const primerNombre = usuario.nombres.trim().split(" ")[0];
     const primerApellido = usuario.apellidos.trim().split(" ")[0];
@@ -50,10 +54,9 @@ export function CardUsuario({
       `${primerNombre.charAt(0)}${primerApellido.charAt(0)}`.toUpperCase();
     const claveTemporal = `${iniciales}.usuario123`;
 
-    // 1. Lanzamos un toast de advertencia/confirmación
     toast.warning(`¿Resetear contraseña de ${usuario.nombres}?`, {
       description: `La nueva clave temporal será: ${claveTemporal}`,
-      duration: Infinity, // No se cierra automáticamente para forzar la decisión
+      duration: Infinity,
       action: {
         label: "Confirmar",
         onClick: async () => {
@@ -61,10 +64,9 @@ export function CardUsuario({
             setIsResetting(true);
             const res = await resetearPasswordUsuario(usuario.id);
 
-            // 2. Toast de éxito con botón de copiado rápido
             toast.success("Contraseña restablecida con éxito", {
               description: `Clave temporal: ${res.passwordTemporal}`,
-              duration: 10000, // 10 segundos visibles
+              duration: 10000,
               action: {
                 label: "Copiar",
                 onClick: () => {
@@ -73,9 +75,9 @@ export function CardUsuario({
                 },
               },
             });
-          } catch (err: any) {
+          } catch (err: unknown) {
             toast.error(
-              err.response?.data?.message || "Error al resetear la contraseña.",
+              extraerMensajeError(err, "Error al resetear la contraseña.")
             );
           } finally {
             setIsResetting(false);
@@ -90,13 +92,13 @@ export function CardUsuario({
   };
 
   return (
-    <div className="bg-bg-surface rounded-xl shadow-sm border border-slate-200/60 dark:border-slate-800 transition-all duration-300 flex flex-col justify-between overflow-hidden transform hover:-translate-y-1 hover:bg-white dark:hover:bg-zinc-900 hover:border-brand-primary/40 dark:hover:border-brand-primary/50 hover:shadow-xl hover:shadow-brand-primary/10 dark:hover:shadow-brand-primary/5">
+    <div className="bg-bg-surface rounded-xl shadow-sm border border-text-muted/15 transition-all duration-300 flex flex-col justify-between overflow-hidden transform hover:-translate-y-1 hover:border-brand-primary/40 hover:shadow-xl hover:shadow-brand-primary/10">
       {/* Cuerpo de la Card */}
       <div className="p-5">
         <div className="flex items-center justify-between gap-2 mb-4">
           <span
             className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${badgeRol(
-              usuario.rol,
+              usuario.rol
             )}`}
           >
             {usuario.rol}
@@ -104,7 +106,7 @@ export function CardUsuario({
 
           <span
             className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${badgeEstado(
-              usuario.estado,
+              usuario.estado
             )}`}
           >
             {usuario.estado}
@@ -117,10 +119,10 @@ export function CardUsuario({
             <img
               src={usuario.foto_url}
               alt={`${usuario.nombres} ${usuario.apellidos}`}
-              className="w-14 h-14 rounded-full object-cover border border-slate-200 dark:border-slate-700 shrink-0"
+              className="w-14 h-14 rounded-full object-cover border border-text-muted/20 shrink-0"
             />
           ) : (
-            <div className="w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-bold flex items-center justify-center border border-blue-200 dark:border-blue-900 text-base uppercase shrink-0">
+            <div className="w-14 h-14 rounded-full bg-brand-primary/15 text-brand-primary font-bold flex items-center justify-center border border-brand-primary/25 text-base uppercase shrink-0">
               {usuario.nombres.charAt(0)}
               {usuario.apellidos.charAt(0)}
             </div>
@@ -130,14 +132,14 @@ export function CardUsuario({
             <h3 className="font-bold text-text-base text-base truncate">
               {usuario.nombres} {usuario.apellidos}
             </h3>
-            <p className="text-xs text-text-muted/80">
+            <p className="text-xs text-text-muted">
               ID: #{usuario.id} • {usuario.masculino ? "Masculino" : "Femenino"}
             </p>
           </div>
         </div>
 
         {/* Detalles de Contacto y Rol */}
-        <div className="space-y-1.5 text-sm text-text-base border-t border-slate-200/60 dark:border-slate-800 pt-3">
+        <div className="space-y-1.5 text-sm text-text-base border-t border-text-muted/10 pt-3">
           <p className="truncate">
             <span className="font-semibold text-text-muted mr-1">Correo:</span>{" "}
             {usuario.email}
@@ -170,21 +172,19 @@ export function CardUsuario({
       </div>
 
       {/* Pie de la Card (Acciones) */}
-      <div className="bg-slate-50/50 dark:bg-zinc-900/40 px-5 py-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between gap-2">
-        <div>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            icon={KeyRound}
-            onClick={handleResetPassword}
-            isLoading={isResetting}
-            className="text-amber-500 hover:text-amber-600 hover:bg-amber-500/10"
-            title="Resetear Contraseña"
-          >
-            Resetear Clave
-          </Button>
-        </div>
+      <div className="bg-bg-base/50 px-5 py-3 border-t border-text-muted/10 flex items-center justify-between gap-2">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          icon={KeyRound}
+          onClick={handleResetPassword}
+          isLoading={isResetting}
+          className="text-amber-600 dark:text-amber-400 hover:bg-amber-500/10"
+          title="Resetear Contraseña"
+        >
+          Resetear Clave
+        </Button>
 
         <div className="flex items-center gap-2">
           {onEditar && (

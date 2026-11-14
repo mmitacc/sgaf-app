@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { Footer } from "@/components";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -22,7 +22,21 @@ export function DashboardLayout() {
     navigate("/login", { replace: true });
   };
 
-  const navigation = usuario ? CONFIG_POR_ROL[usuario.rol].menu : [];
+  // 1. Verificar si es un estudiante con restricción por pago
+  const esEstudianteRestringido =
+    usuario?.rol === "ESTUDIANTE" &&
+    (usuario.estado === "PENDIENTE" || usuario.estado === "SUSPENDIDO");
+
+  // 2. Bloquear acceso a cualquier ruta que no sea /estudiante/pagos
+  if (esEstudianteRestringido && location.pathname !== "/estudiante/pagos") {
+    return <Navigate to="/estudiante/pagos" replace />;
+  }
+
+  // 3. Filtrar las opciones del menú lateral
+  const menuCompleto = usuario ? CONFIG_POR_ROL[usuario.rol].menu : [];
+  const navigation = esEstudianteRestringido
+    ? menuCompleto.filter((item) => item.path === "/estudiante/pagos")
+    : menuCompleto;
 
   return (
     <div className="min-h-screen bg-bg-base text-text-base transition-colors duration-200">

@@ -7,7 +7,7 @@ export function AdminEstadisticasPage() {
 
   if (loading || !resumen) {
     return (
-      <div className="p-6 text-sm text-slate-500">
+      <div className="p-6 text-sm text-text-muted">
         Cargando estadísticas globales...
       </div>
     );
@@ -17,15 +17,15 @@ export function AdminEstadisticasPage() {
     <div className="space-y-6 p-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-text-base">
             Estadísticas Globales
           </h1>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-text-muted">
             Indicadores de comunidad académica, carga docente y ocupación de
             aulas.
           </p>
         </div>
-        <span className="rounded-full bg-blue-50 px-3.5 py-1.5 text-xs font-semibold text-blue-700">
+        <span className="rounded-full border border-brand-primary/25 bg-brand-primary/15 px-3.5 py-1.5 text-xs font-semibold text-brand-primary">
           Periodo Activo: {resumen.periodo}
         </span>
       </div>

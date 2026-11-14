@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { perfilService } from "../services/perfil";
-import type { Rol } from "@/features/usuario/types/usuarioType";
+import type { Rol, EstadoUsuario } from "@/features/usuario/types/usuarioType";
 import { toast } from "sonner";
 import { extraerMensajeError } from "@/services/errorHandle";
 import { RUTA_INICIAL_POR_ROL } from "@/config/roles.config";
@@ -11,6 +11,7 @@ export interface UsuarioAutenticado {
   nombres: string;
   apellidos: string;
   email: string;
+  estado: EstadoUsuario;
   rol: Rol;
   foto_url?: string | null;
   telefono?: string | null;

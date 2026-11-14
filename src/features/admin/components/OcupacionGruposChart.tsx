@@ -7,6 +7,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
+import { RECHARTS_THEME } from "@/config/rechartsTheme";
 
 interface GrupoOcupacion {
   nombre: string;
@@ -23,16 +24,16 @@ export const OcupacionGruposChart = ({ data }: { data: GrupoOcupacion[] }) => {
         ? "#EF4444"
         : item.porcentaje >= 70
           ? "#F59E0B"
-          : "#2563EB",
+          : "#0EA5E9",
   }));
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-text-muted/15 bg-bg-surface p-6 shadow-sm transition-colors duration-200">
       <div className="mb-4">
-        <h3 className="text-base font-bold text-slate-800">
+        <h3 className="text-base font-bold text-text-base">
           Ocupación de Secciones (Top 5)
         </h3>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-text-muted">
           Porcentaje de aforo cubierto por materia y aula
         </p>
       </div>
@@ -47,27 +48,29 @@ export const OcupacionGruposChart = ({ data }: { data: GrupoOcupacion[] }) => {
             <CartesianGrid
               strokeDasharray="3 3"
               horizontal={false}
-              stroke="#E2E8F0"
+              stroke={RECHARTS_THEME.gridStroke}
             />
             <XAxis
               type="number"
               domain={[0, 100]}
               unit="%"
-              tick={{ fontSize: 12, fill: "#64748B" }}
+              tick={RECHARTS_THEME.tickStyle}
+              axisLine={{ stroke: RECHARTS_THEME.axisStroke }}
+              tickLine={false}
             />
             <YAxis
               type="category"
               dataKey="nombre"
               width={150}
-              tick={{ fontSize: 11, fill: "#334155" }}
+              tick={{ fill: "var(--color-text-main)", fontSize: 11 }}
               axisLine={false}
               tickLine={false}
             />
             <Tooltip
-              contentStyle={{
-                borderRadius: "12px",
-                border: "1px solid #E2E8F0",
-              }}
+              cursor={RECHARTS_THEME.cursorStyle}
+              contentStyle={RECHARTS_THEME.tooltipContentStyle}
+              itemStyle={RECHARTS_THEME.tooltipItemStyle}
+              labelStyle={RECHARTS_THEME.tooltipLabelStyle}
               formatter={(value) => [
                 `${Number(value ?? 0)}% de capacidad`,
                 "Ocupación",

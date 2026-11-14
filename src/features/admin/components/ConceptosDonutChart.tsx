@@ -1,11 +1,12 @@
 import { ResponsiveContainer, PieChart, Pie, Tooltip, Legend } from "recharts";
+import { RECHARTS_THEME } from "@/config/rechartsTheme";
 
 export interface DatoConcepto {
   name: string;
   value: number;
 }
 
-const COLORES = ["#2563EB", "#10B981", "#F59E0B", "#6366F1", "#EC4899"];
+const COLORES = ["#0EA5E9", "#10B981", "#F59E0B", "#8B5CF6", "#EC4899"];
 
 export const ConceptosDonutChart = ({ data }: { data: DatoConcepto[] }) => {
   const chartData = data.map((item, index) => ({
@@ -14,12 +15,12 @@ export const ConceptosDonutChart = ({ data }: { data: DatoConcepto[] }) => {
   }));
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-text-muted/15 bg-bg-surface p-6 shadow-sm transition-colors duration-200">
       <div className="mb-4">
-        <h3 className="text-base font-bold text-slate-800">
+        <h3 className="text-base font-bold text-text-base">
           Ingresos por Concepto
         </h3>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-text-muted">
           Distribución entre matrícula y pensiones
         </p>
       </div>
@@ -36,18 +37,23 @@ export const ConceptosDonutChart = ({ data }: { data: DatoConcepto[] }) => {
               innerRadius={55}
               outerRadius={80}
               paddingAngle={4}
+              stroke={RECHARTS_THEME.surfaceColor}
+              strokeWidth={2}
             />
             <Tooltip
-              contentStyle={{
-                borderRadius: "12px",
-                border: "1px solid #E2E8F0",
-              }}
+              contentStyle={RECHARTS_THEME.tooltipContentStyle}
+              itemStyle={RECHARTS_THEME.tooltipItemStyle}
+              labelStyle={RECHARTS_THEME.tooltipLabelStyle}
               formatter={(value) => [
                 `S/ ${Number(value ?? 0).toFixed(2)}`,
                 "Monto",
               ]}
             />
-            <Legend position="bottom" height={36} iconType="circle" />
+            <Legend
+              wrapperStyle={RECHARTS_THEME.legendStyle}
+              height={36}
+              iconType="circle"
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>

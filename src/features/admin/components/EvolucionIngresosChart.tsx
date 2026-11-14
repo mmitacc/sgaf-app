@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import { RECHARTS_THEME } from "@/config/rechartsTheme";
 
 export interface DatoEvolucion {
   mes: string;
@@ -15,12 +16,12 @@ export interface DatoEvolucion {
 
 export const EvolucionIngresosChart = ({ data }: { data: DatoEvolucion[] }) => {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-text-muted/15 bg-bg-surface p-6 shadow-sm transition-colors duration-200">
       <div className="mb-4">
-        <h3 className="text-base font-bold text-slate-800">
+        <h3 className="text-base font-bold text-text-base">
           Evolución Mensual de Ingresos
         </h3>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-text-muted">
           Pagos confirmados agrupados por mes
         </p>
       </div>
@@ -39,31 +40,42 @@ export const EvolucionIngresosChart = ({ data }: { data: DatoEvolucion[] }) => {
                 x2="0"
                 y2="1"
               >
-                <stop offset="5%" stopColor="#2563EB" stopOpacity={0.25} />
-                <stop offset="95%" stopColor="#2563EB" stopOpacity={0} />
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-primary)"
+                  stopOpacity={0.3}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-primary)"
+                  stopOpacity={0}
+                />
               </linearGradient>
             </defs>
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}
-              stroke="#E2E8F0"
+              stroke={RECHARTS_THEME.gridStroke}
             />
             <XAxis
               dataKey="mes"
-              tick={{ fontSize: 12, fill: "#64748B" }}
+              tick={RECHARTS_THEME.tickStyle}
               axisLine={false}
               tickLine={false}
             />
             <YAxis
-              tick={{ fontSize: 12, fill: "#64748B" }}
+              tick={RECHARTS_THEME.tickStyle}
               axisLine={false}
               tickLine={false}
             />
             <Tooltip
-              contentStyle={{
-                borderRadius: "12px",
-                border: "1px solid #E2E8F0",
+              cursor={{
+                stroke: RECHARTS_THEME.axisStroke,
+                strokeDasharray: "3 3",
               }}
+              contentStyle={RECHARTS_THEME.tooltipContentStyle}
+              itemStyle={RECHARTS_THEME.tooltipItemStyle}
+              labelStyle={RECHARTS_THEME.tooltipLabelStyle}
               formatter={(value) => [
                 `S/ ${Number(value ?? 0).toFixed(2)}`,
                 "Recaudado",
@@ -72,7 +84,7 @@ export const EvolucionIngresosChart = ({ data }: { data: DatoEvolucion[] }) => {
             <Area
               type="monotone"
               dataKey="recaudado"
-              stroke="#2563EB"
+              stroke="var(--color-primary)"
               strokeWidth={2.5}
               fill="url(#gradienteIngresos)"
             />

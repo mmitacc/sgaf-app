@@ -166,12 +166,20 @@ export default function LoginPage() {
                 />
                 Recordarme
               </label>
-              <Link
-                to="/recuperar-password"
-                className="font-medium text-brand-primary hover:underline"
+
+              <button
+                type="button"
+                onClick={() =>
+                  toast.info("Recuperación de contraseña", {
+                    description:
+                      "Por seguridad, contáctate personalmente con el Administrador o acércate a Recepción para solicitar el reseteo de tu clave.",
+                    duration: 6000,
+                  })
+                }
+                className="cursor-pointer font-medium text-brand-primary hover:underline"
               >
                 ¿Olvidaste tu contraseña?
-              </Link>
+              </button>
             </div>
 
             <Button type="submit" className="w-full" isLoading={enviando}>

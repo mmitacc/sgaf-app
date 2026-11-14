@@ -85,10 +85,10 @@ export function AppRouter() {
               element={<ActivacionMatriculaPage />}
             />
             <Route path="recepcion/pagos" element={<PagosPage />} />
-            <Route
+            {/* <Route
               path="recepcion/estudiantes"
               element={<div>Directorio Estudiantes</div>}
-            />
+            /> */}
           </Route>
 
           {/* 3. MÓDULOS PROFESOR */}

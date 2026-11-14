@@ -1,5 +1,4 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router";
+import { Navigate, Outlet, useLocation } from "react-router";
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 import type { Rol } from "@/features/usuario/types/usuarioType";
 
@@ -7,9 +6,8 @@ interface ProtectedRouteProps {
   allowedRoles?: Rol[];
 }
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  allowedRoles,
-}) => {
+export function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
+  const location = useLocation();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const usuario = useAuthStore((s) => s.usuario);
 
@@ -18,11 +16,20 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/login" replace />;
   }
 
-  // 2. Si se especificaron roles y el usuario no tiene permiso, redirige al dashboard
+  // 2. Si es ESTUDIANTE con estado PENDIENTE o SUSPENDIDO, solo puede acceder a pagos
+  const isEstudianteRestringido =
+    usuario?.rol === "ESTUDIANTE" &&
+    (usuario?.estado === "PENDIENTE" || usuario?.estado === "SUSPENDIDO");
+
+  if (isEstudianteRestringido && location.pathname !== "/estudiante/pagos") {
+    return <Navigate to="/estudiante/pagos" replace />;
+  }
+
+  // 3. Si se especificaron roles y el usuario no tiene permiso, redirige al dashboard
   if (allowedRoles && usuario && !allowedRoles.includes(usuario.rol)) {
     return <Navigate to="/dashboard" replace />;
   }
 
-  // 3. Renderiza las rutas hijas protegidas
+  // 4. Renderiza las rutas hijas protegidas
   return <Outlet />;
-};
+}

@@ -92,13 +92,13 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
         descripcion:
           "Registra cobros de mensualidades, matrículas y consulta estados de cuenta.",
       },
-      {
-        label: "Directorio Estudiantes",
-        path: "/recepcion/estudiantes",
-        icon: GraduationCap,
-        descripcion:
-          "Consulta datos de contacto, estado académico y situación financiera.",
-      },
+      // {
+      //   label: "Directorio Estudiantes",
+      //   path: "/recepcion/estudiantes",
+      //   icon: GraduationCap,
+      //   descripcion:
+      //     "Consulta datos de contacto, estado académico y situación financiera.",
+      // },
     ],
   },
 
