@@ -4,7 +4,7 @@ import {
   Users,
   Wallet,
   ClipboardCheck,
-  GraduationCap,
+  // GraduationCap,
   BookOpen,
   FileSpreadsheet,
   Receipt,

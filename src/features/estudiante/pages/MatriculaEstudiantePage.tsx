@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import api from "@/services/axios";
 import {
   BookOpen,
   User,
@@ -14,7 +13,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { estudianteService } from "../services/estudianteService";
-import type { GrupoEnriquecido, MatriculaActiva } from "../types/matriculaType";
+import type { GrupoEnriquecido } from "../types/matriculaType";
 import { extraerMensajeError } from "@/services/errorHandle";
 
 export function MatriculaEstudiantePage() {
