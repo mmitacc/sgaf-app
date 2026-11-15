@@ -3,7 +3,7 @@ import { AdminResumenKpis } from "../components/AdminResumenKpis";
 import { OcupacionGruposChart } from "../components/OcupacionGruposChart";
 
 export function AdminEstadisticasPage() {
-  const { resumen, loading } = useAdminDashboard();
+  const { resumen, loading, periodoId, setPeriodoId } = useAdminDashboard();
 
   if (loading || !resumen) {
     return (
@@ -25,9 +25,27 @@ export function AdminEstadisticasPage() {
             aulas.
           </p>
         </div>
-        <span className="rounded-full border border-brand-primary/25 bg-brand-primary/15 px-3.5 py-1.5 text-xs font-semibold text-brand-primary">
-          Periodo Activo: {resumen.periodo}
-        </span>
+
+        <select
+          value={periodoId ?? ""}
+          onChange={(e) => setPeriodoId(Number(e.target.value))}
+          aria-label="Seleccionar periodo académico"
+          className="cursor-pointer rounded-full border border-brand-primary/25 bg-brand-primary/15 px-4 py-1.5 text-xs font-semibold text-brand-primary outline-none transition hover:bg-brand-primary/20"
+        >
+          {resumen.periodos?.length ? (
+            resumen.periodos.map((p) => (
+              <option
+                key={p.id}
+                value={p.id}
+                className="bg-bg-surface text-text-base"
+              >
+                Periodo: {p.nombre}
+              </option>
+            ))
+          ) : (
+            <option value="">Periodo Activo: {resumen.periodo}</option>
+          )}
+        </select>
       </div>
 
       <AdminResumenKpis resumen={resumen} />

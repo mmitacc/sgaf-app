@@ -16,6 +16,7 @@ import { UsuariosPage } from "@/features/usuario/pages/UsuariosPage";
 import { RegistroUsuarioPage } from "@/features/usuario/pages/RegistroUsuarioPage";
 import { AdminFinanzasPage } from "@/features/admin/pages/AdminFinanzasPage";
 import { AdminEstadisticasPage } from "@/features/admin/pages/AdminEstadisticasPage";
+import { AdminAcademicoPage } from "@/features/admin/pages/AdminAcademicoPage";
 
 // Páginas Recepcionista
 import { RecepcionDashboardPage } from "@/features/recepcion/pages/RecepcionDashboardPage";
@@ -72,6 +73,7 @@ export function AppRouter() {
               path="usuario/editar/:id"
               element={<RegistroUsuarioPage />}
             />
+            <Route path="/admin/academico" element={<AdminAcademicoPage />} />
           </Route>
 
           {/* 2. MÓDULOS RECEPCIONISTA */}

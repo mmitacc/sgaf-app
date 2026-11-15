@@ -44,11 +44,11 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
         icon: LayoutDashboard,
       },
       {
-        label: "Gestión de Usuarios",
-        path: "/usuario",
-        icon: Users,
+        label: "Finanzas y Reportes",
+        path: "/admin/finanzas",
+        icon: Wallet,
         descripcion:
-          "Administra cuentas, roles y permisos de docentes, estudiantes y personal.",
+          "Supervisa recaudación global, historial de pagos y reportes financieros.",
       },
       {
         label: "Estadísticas Globales",
@@ -58,11 +58,17 @@ export const CONFIG_POR_ROL: Record<Rol, ConfiguracionRol> = {
           "Visualiza métricas de comunidad estudiantil, plana docente y ocupación de grupos.",
       },
       {
-        label: "Finanzas y Reportes",
-        path: "/admin/finanzas",
-        icon: Wallet,
+        label: "Gestión Académica",
+        path: "/admin/academico",
+        icon: BookOpen,
+        descripcion: "Administra periodos, materias, aulas, grupos y horarios.",
+      },
+      {
+        label: "Gestión de Usuarios",
+        path: "/usuario",
+        icon: Users,
         descripcion:
-          "Supervisa recaudación global, historial de pagos y reportes financieros.",
+          "Administra cuentas, roles y permisos de docentes, estudiantes y personal.",
       },
     ],
   },
