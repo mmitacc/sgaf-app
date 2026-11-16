@@ -43,7 +43,6 @@ export const registrarEstudiante = async (
   data: RegistroEstudiante,
   fotoFile?: File | null,
 ): Promise<UsuarioGenerico> => {
-  console.log("Data Usuarionuevo: ", data);
 
   const payload = prepararCuerpoPeticion(data, fotoFile);
   const response = await api.post<UsuarioGenerico>("/auth/register", payload);

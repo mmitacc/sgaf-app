@@ -46,7 +46,7 @@ export default function ProfilePage() {
     setPreviewUrl(URL.createObjectURL(file));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setGuardando(true);
 
@@ -63,7 +63,7 @@ export default function ProfilePage() {
       // Pasa la respuesta directa del PUT para actualizar Zustand y localStorage al instante
       await actualizarPerfil(usuarioActualizado);
       toast.success("Perfil actualizado correctamente.");
-      navigate("/dashboard");
+      navigate(-1);
     } catch (err) {
       toast.error(extraerMensajeError(err, "No se pudo actualizar el perfil."));
     } finally {

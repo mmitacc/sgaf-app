@@ -1,10 +1,10 @@
 import { Download, UserX } from "lucide-react";
 import { useAdminFinanzas } from "../hooks/useAdminFinanzas";
-import { FinanzasKpiCards } from "../components/FinanzasKpiCards";
-import { EvolucionIngresosChart } from "../components/EvolucionIngresosChart";
-import { ConceptosDonutChart } from "../components/ConceptosDonutChart";
-import { CanalesPagoBarChart } from "../components/CanalesPagoBarChart";
-import { PagosConsolidadosTable } from "../components/PagosConsolidadosTable";
+import { FinanzasKpiCards } from "../components/finanzas/FinanzasKpiCards";
+import { EvolucionIngresosChart } from "../components/finanzas/EvolucionIngresosChart";
+import { ConceptosDonutChart } from "../components/finanzas/ConceptosDonutChart";
+import { CanalesPagoBarChart } from "../components/finanzas/CanalesPagoBarChart";
+import { PagosConsolidadosTable } from "../components/finanzas/PagosConsolidadosTable";
 
 export const AdminFinanzasPage = () => {
   const {

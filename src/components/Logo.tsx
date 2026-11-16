@@ -1,17 +1,15 @@
-import React from 'react';
-
 interface LogoProps {
   className?: string;
   showText?: boolean;
 }
 
-export const Logo: React.FC<LogoProps> = ({ className = "h-10", showText = true }) => {
+export function Logo({ className = "h-10", showText = true }: LogoProps) {
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      <svg 
-        viewBox="0 0 100 100" 
+      <svg
+        viewBox="0 0 100 100"
         className="h-full w-auto"
-        fill="none" 
+        fill="none"
         xmlns="http://w3.org"
       >
         <defs>
@@ -21,18 +19,15 @@ export const Logo: React.FC<LogoProps> = ({ className = "h-10", showText = true 
           </linearGradient>
         </defs>
         {/* Isotipo: Combinación de Gorro de Graduación Estilizado y Circuitos */}
-        <path 
-          d="M50 15L15 35L50 55L85 35L50 15Z" 
-          fill="url(#techGrad)" 
-        />
-        <path 
-          d="M25 46.5V65C25 75 50 85 50 85C50 85 75 75 75 65V46.5L50 61L25 46.5Z" 
-          fill="url(#techGrad)" 
+        <path d="M50 15L15 35L50 55L85 35L50 15Z" fill="url(#techGrad)" />
+        <path
+          d="M25 46.5V65C25 75 50 85 50 85C50 85 75 75 75 65V46.5L50 61L25 46.5Z"
+          fill="url(#techGrad)"
           opacity="0.85"
         />
         <circle cx="50" cy="35" r="6" fill="#000" opacity="0.15" />
       </svg>
-      
+
       {showText && (
         <span className="font-extrabold text-xl tracking-tight text-text-base">
           Tech<span className="text-brand-primary">University</span>
@@ -40,4 +35,4 @@ export const Logo: React.FC<LogoProps> = ({ className = "h-10", showText = true 
       )}
     </div>
   );
-};
+}

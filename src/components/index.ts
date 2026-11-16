@@ -5,6 +5,5 @@ export * from "./Footer";
 export * from "./Input";
 export * from "./Select";
 export * from "./NotFound";
-export * from "./RutaProtegida";
 export * from "./Unauthorized";
 export * from "./PageLoader";

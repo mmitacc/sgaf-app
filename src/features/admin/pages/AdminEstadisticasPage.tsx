@@ -1,6 +1,6 @@
 import { useAdminDashboard } from "../hooks/useAdminDashboard";
-import { AdminResumenKpis } from "../components/AdminResumenKpis";
-import { OcupacionGruposChart } from "../components/OcupacionGruposChart";
+import { AdminResumenKpis } from "../components/estadisticas/AdminResumenKpis";
+import { OcupacionGruposChart } from "../components/estadisticas/OcupacionGruposChart";
 
 export function AdminEstadisticasPage() {
   const { resumen, loading, periodoId, setPeriodoId } = useAdminDashboard();

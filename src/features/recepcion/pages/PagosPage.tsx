@@ -121,7 +121,7 @@ export function PagosPage() {
             <option value="TODOS">Todos los conceptos</option>
             <option value="MATRICULA">Matrícula</option>
             <option value="MENSUALIDAD">Mensualidad</option>
-            <option value="TRAMITE">Trámite</option>
+            <option value="OTROS">Otros</option>
           </select>
         </div>
 
