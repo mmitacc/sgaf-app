@@ -1,5 +1,6 @@
 import { Users, BookOpen, GraduationCap, Wallet } from "lucide-react";
-import type { DashboardEjecutivoResponse } from "../types/adminType";
+import type { DashboardEjecutivoResponse } from "../../types/adminType";
+
 
 export const AdminResumenKpis = ({
   resumen,
